@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <style>
+        #test {
+          background-color: red;
+        }
+        div {
+          background-color: yellow;
+        }
+        ul{
+          list-style-type: none;
+          background-color: #f0f0f0;
+        }
+        ul::after{
+          clear: both;
+          content: " ";
+          display: block;
+        }
+        li{
+          float: left;
+        }
+        a{
+          display: inline-block;
+          padding: 10px;
+        }
+      </style>
+   </head>
+   <body>
+      <div id="test">Đây là phần tử div</div>
+
+      <ul>
+        <li><a href="#" >Header</a></li>
+        <li><a href="#" >Header</a></li>
+        <li><a href="#" >Header</a></li>
+        <li><a href="#" >Header</a></li>
+      </ul>
+      <span>vcl</span>
+   </body>
+</html>

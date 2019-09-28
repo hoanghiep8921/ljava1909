@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #header{
+            height: 200px;
+        }
+        #header-left{
+            height: 200px;
+            width: 30%;
+            background-color: black;
+            float:left;
+        }
+        #header-right{
+            width: 70%;
+            height: 200px;
+            background-color: pink;
+            float:left;
+        }
+        
+        #navigation{
+            height: 300px;
+        }
+        #navigation-left{
+            width: 70%;
+            height: 200px;
+            background-color: red;
+            float:left;
+        }
+        #navigation-right{
+            width: 30%;
+            height: 200px;
+            background-color: blue;
+            float:left;
+        }
+        #content{
+            background-color: yellow;
+            height: 100px;
+        }
+        #footer{
+            height: 50px;
+            background-color: green;
+        }
+
+        .clearfix::after{
+            clear: both;
+            content:" ";
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="header" class="clearfix">
+            <div id="header-left"></div>
+            <div id="header-right"></div>
+        </div>
+        <div id="navigation" class="clearfix">
+                <div id="navigation-left"></div>
+                <div id="navigation-right"></div>
+        </div>
+        <div id="content"></div>
+        <div id="footer"></div>
+    </div>
+</body>
+</html>

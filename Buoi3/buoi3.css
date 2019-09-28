@@ -1,0 +1,40 @@
+#container{
+    width: 900px;
+    margin: 20px auto;
+    height: 600px;
+    background-color: violet;
+    text-align: center;
+}
+
+#header{
+    height: 100px;
+    background-color: blue;
+}
+#content{
+    background-color: red;
+}
+#footer{
+    height: 100px;
+    background-color: brown;
+}
+
+#content-left{
+    background-color: chartreuse;
+    height: 200px;
+    float:left;
+    width: 300px;
+}
+
+#content-right{
+    background-color: black;
+    height: 200px;
+    color:white;
+    float: left;
+    width: 600px;
+}
+
+.clearfix::after {
+    clear: both;
+    display: block;
+    content: " ";
+}
