@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            .container {
+                width: 50%;
+                margin: auto;
+                text-align: center;
+            }
+            p {
+                text-align: left;
+            }
+            /* Định dạng các button mô tả cho nội dung*/
+            button.accordion {
+                background-color: #3d26ee;
+                color: white;
+                cursor: pointer;
+                padding: 18px;
+                width: 100%;
+                text-align: left;
+                border: none;
+                outline: none;
+                transition: 1s;
+            }
+             
+            /* Thêm màu nền cho button được active hoặc được hover*/
+            button.accordion.active, button.accordion:hover {
+                background-color: #2fed46;
+            }
+             
+            /* Thiết lập cho phần nội dung, mặc định sẽ được ẩn đi */
+            div.panel {
+                padding: 0 18px;
+                background-color: white;
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <button class="accordion">HTML</button>
+            <div class="panel">
+                <p>
+                    HTML (tiếng Anh, viết tắt cho HyperText Markup Language, hay là 
+                    "Ngôn ngữ Đánh dấu Siêu văn bản") là một ngôn ngữ đánh dấu được 
+                    thiết kế ra để tạo nên các trang web với các mẩu thông tin được 
+                    trình bày trên World Wide Web.
+                </p>
+            </div>
+         
+            <button class="accordion">CSS</button>
+            <div class="panel">
+                <p>
+                    dịch từ tiếng Anh là Cascading Style Sheets (CSS) – được dùng để 
+                    miêu tả cách trình bày các tài liệu viết bằng ngôn ngữ HTML và XHTML.
+                    Ngoài ra ngôn ngữ định kiểu theo tầng cũng có thể dùng cho XML, SVG, XUL.
+                    Các đặc điểm kỹ thuật của CSS được duy trì bởi World Wide Web Consortium (W3C).
+                </p>
+            </div>
+         
+            <button class="accordion">JAVASCRIPT</button>
+            <div class="panel">
+                <p>
+                    JavaScript, theo phiên bản hiện hành, là một ngôn ngữ lập trình 
+                    kịch bản dựa trên đối tượng được phát triển từ các ý niệm nguyên mẫu.
+                    Ngôn ngữ này được dùng rộng rãi cho các trang web, nhưng cũng được dùng 
+                    ể tạo khả năng viết script sử dụng các đối tượng nằm sẵn trong các ứng dụng.
+                </p>
+            </div>
+        </div>
+    </body>
+    <script>
+        //Lấy các button mô tả nội dung
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+        console.log(acc);
+        //lặp qua các button để gán sự kiện
+        for (i = 0; i < acc.length; i++) {
+            acc[i].onclick = function(){
+                console.log(this);// this ở đây chính là acc[i] : chính là các button
+                /* Thêm/xóa class active để đánh dấu các button đã được click */
+                this.classList.toggle("active");
+     
+                /* Hiển thị hoặc ẩn nội dung khi button được click */
+                var panel = this.nextElementSibling; // Lấy ra element bằng cấp kế tiếp
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+            }
+        }
+    </script>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+   var testArrayLength = 100000;
+    var testArray = Array.from({length: testArrayLength}, () => Math.floor(Math.random() * 2000000));
+
+// ES6 spread
+Math.min(...testArray);
+Math.max(...testArray);
+
+// reduce
+testArray.reduce(function(a, b) {
+  return Math.max(a, b);
+});
+testArray.reduce(function(a, b) {
+  return Math.min(a, b);
+});
+
+// apply
+Math.min.apply(Math, testArray);
+Math.max.apply(Math, testArray);
+
+// standard loop
+let max = testArray[0];
+for (let i = 1; i < testArrayLength; ++i) {
+  if (testArray[i] > max) {
+    max = testArray[i];
+  }
+}
+
+let min = testArray[0];
+for (let i = 1; i < testArrayLength; ++i) {
+  if (testArray[i] < min) {
+    min = testArray[i];
+  }
+}
+
+
+//Second Max
+function FindByLoop(){
+    let firstMax, secondMax;
+    let a = [1,5,4,7,9,10];
+    if (a[0] > a[1]){
+        firstMax = a[0];
+        secondMax = a[1];
+    }else{
+        firstMax = a[1];
+        secondMax = a[0];
+    }
+    for(let i = 2; i < a.length; i++){
+        if(a[i] >= firstMax){
+            secondMax = firstMax;
+            firstMax = a[i];
+        }else if (a[i] > secondMax){
+            secondMax = a[i];
+        }
+    }
+    console.log(secondMax);
+}
+FindByLoop();
+
+//check full exception
+function max2(){
+    let arr = [9];
+    var max1 = arr[0];
+    var max2 = 0;
+    var hasMax2 = false;
+    for(var i=0;i<arr.length;i++){
+        if(arr[i]>max1){
+            hasMax2=true;
+            max2 = max1;
+            max1 = arr[i];
+        }else if(arr[i] < max1){
+            if(!hasMax2){
+                hasMax2 = true;
+                max2 = arr[i];
+            }else if(arr[i] > max2)  {
+                max2 = arr[i];
+            }
+        }
+    }
+    
+    if(hasMax2)console.log(max2);
+        console.log('ngu');
+}
+max2();
+    </script>
+</body>
+</html>
