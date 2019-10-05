@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: gray;
+        }
+        .container{
+            width:500px;
+            margin:0 auto;
+            background-color: gray;
+        }
+
+        /* css for slide */
+        .item-container{
+            background-color: white;
+            padding:20px;
+            border-radius: 10px;
+
+        }
+        .item-slide{
+            position: relative;
+        }
+        .next{
+            position: absolute;
+            right: 0;
+            top:50%;
+            transform: translate(0,-50%);
+            background-color: #767676;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+        .prev{
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translate(0,-50%);
+            background-color: #767676;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+        .prev img,.next img{
+            display: block;
+            margin-left: auto;
+            margin-right:auto;
+        }
+        .clearfix::after{
+            clear: both;
+            display: block;
+            content: " ";
+        }
+        
+
+
+        /* css for content */
+        .float-left{
+            float: left;
+        }
+        .float-right{
+            float: right;
+        }
+        .checked{
+            color: orange;
+        }
+        .item-content__top{
+            position: relative;
+        }
+        .icon-center{
+            position: absolute;
+            top: 0;
+            left:50%;
+            transform: translate(-50%,0);
+        }
+
+        .infomation{
+            width: 50%;
+        }
+        .description{
+            width: 50%;
+        }
+        .user-name{
+            width: 70%;
+        }
+        .user-img {
+            position: relative;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%
+
+        }
+        .status-icon{
+            position: absolute;
+            top:0;
+            right: 0;
+            color: green;
+            font-size: 10px;
+        }
+
+        /* css for bottom */
+        .button{
+            width: 33.333%;
+            background-color: gray;
+            border-right:1px solid white;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="list-item">
+            <div class="item-container">
+                <!-- layout slide -->
+                <div class="item-slide">
+                    <img src="https://cdn.pixabay.com/photo/2016/04/15/04/02/water-1330252__340.jpg" 
+                    height="300px" width="460px">
+                    <div class="prev">
+                        <img src='https://cdn1.iconfinder.com/data/icons/basic-arrow/512/Artboard_22-512.png'
+                        height="30px" width="30px" >
+                    </div>
+                    <div class="next">
+                        <img src="https://cdn1.iconfinder.com/data/icons/basic-arrow/512/Artboard_21-512.png"
+                        height="30px" width="30px" >
+                    </div>
+                </div>
+
+                <div class="item-content">
+                    <div class="item-content__top clearfix">
+                        <div class="price float-left">
+                            starting at 5$
+                        </div>
+                        <div class="rate float-right">
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <i class="fa fa-heart icon-center"></i>
+                    </div>
+
+                    <div class="item-content__bottom clearfix">
+                        <div class="infomation float-left">
+                            <div class="user clearfix">
+                                <div class="user-img float-left"
+                                    style="background-image: url(https://cdn3.iconfinder.com/data/icons/linecons-interface/512/user_avatar-128.png)">
+                                    <i class="fa fa-circle status-icon"></i>
+                                </div>
+                                <div class="user-name float-left">
+                                    POY PUN
+                                </div>
+                            </div>
+                            <div class="order">
+                                Order 5 in quuereu
+                            </div>
+                        </div>
+                        <div class="description float-left">
+                                <p style="background-color: grey;border-radius: 5px;padding: 5px">
+                                    What is this!! what is that</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-bottom clearfix">
+                    <div class="button float-left">
+                        <i class="fa fa-user"></i>Login
+                    </div>
+                    <div class="button float-left">
+                            <i class="fa fa-user"></i>Login
+                    </div>
+                    <div class="button float-left">
+                        <i class="fa fa-user"></i>Login
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
