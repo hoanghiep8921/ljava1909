@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+    *{
+        margin:0;
+        padding:0;
+    }
+    body{
+        box-sizing: border-box;
+    }
+    .container{
+        padding: 30px;
+        width: 80%;
+        margin:0 auto;
+        text-align: center;
+    }
+    .clear-fix::after{
+        clear: both;
+        display: block;
+        content: " ";
+    }
+    ul{
+        list-style-type: none;
+        margin-bottom: 30px;
+    }
+    ul li {
+        display:inline-block;
+        border-right: 1px solid black;
+        padding:10px;
+    }
+    li:nth-last-of-type(3){
+        margin-right: 160px;
+        
+        border-right: none;
+    }
+    li:nth-last-of-type(1){
+        border-right: none;
+    }
+    .logo,.infomation,.cart{
+        float:left;
+    }
+    .logo,.cart{
+        width: 25%;
+    }
+    .infomation{
+        width: 50%;
+    }
+    </style>
+</head>
+<body>
+    <header>
+
+        <div class="container">
+            <div class="logo">
+                <div>
+                    <i class="fa fa-paragraph" style="font-size:80px;color:green"></i>
+                </div>
+                <h2><span >Plant</span><span style="color:green">Shop</span></h2>
+            </div>
+            <div class="infomation">
+                <ul class="clear-fix">
+                    <li><a>Sale</a></li>
+                    <li><a>Sale</a></li>
+                    <li><a>Sale</a></li>
+                    <li><a>Sale</a></li>
+                    <li><a>Sale</a></li>
+                </ul>
+                <div>
+                    <i class="fa fa-phone"></i>Phone 123325345345
+                </div>
+            </div>
+            <div class="cart clear-fix">
+                <div style="float:left;width: 20%;">
+                        <i class="fa fa-phone" style="font-size:60px;color:green"></i>
+            
+                </div>
+                
+                <div style="float:left;width:80%;text-align: left;">
+                    <p style="font-size:30px;padding:10px;border-bottom: 1px solid black;">Shopping cart </p>
+                    
+                    <p style="padding:10px;border-bottom: 1px solid black;">Item </p>
+                    <p style="padding:10px;border-bottom: 1px solid black;">cart </p>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+</body>
+</html>
