@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+</head>
+<body>
+    
+    <h1>Hello Java script</h1>
+    <h2 id="text">Phần từ cần tìm<span>124324</span></h2>
+    <!-- <script src="index.js">
+    </script> -->
+    <script>
+        var a = 5;
+        console.log(typeof a);
+        document.write(a);
+        a = 'abc ' // " ";
+        document.write(a);
+        console.log(typeof a);
+
+        var element = document.getElementById("text");
+        console.log(element);
+        console.log(typeof element);
+        //document.getElementById("text").innerHTML = "JAVA SCript Easy to learn";
+        document.getElementById("text").innerText = "JAVA SCript Easy to learn";
+
+        var b = null;
+        var c ;
+        console.log(b);
+        
+        console.log(c);
+
+
+        function sum1(){
+            var number1 = 10;
+            var number2 = 20;
+            console.log(number1+number2);
+        }
+        var result = function sum2(){
+            var number1 = 10;
+            var number2 = 20;
+            return number1+number2;
+        }
+
+        function sum3(a,b){
+            console.log(a+b);
+            return;
+            console.log(a+b);
+            console.log(a+b);
+            console.log(a+b);
+            console.log(a+b);
+            console.log(a+b);
+        }
+        sum1();
+        var s1 = result();
+        var s2 = result();
+        sum3(s1,s2);
+
+        var sinhvien = {
+            name : "Hiệp",
+            year : 1996,
+            eat : function eat(){
+                console.log("eat");
+                return 123;
+            }
+        };
+
+        console.log(sinhvien);
+        console.log(typeof sinhvien);
+
+        console.log(sinhvien.name);
+        var tmp = sinhvien.eat();
+        console.log(tmp);
+
+        var student = {
+            data:[],
+            view : function print(){
+                for(var i=0;i<this.data.length;++i){
+                    console.log(this.data[i].id + "--" + this.data[i].name);
+                }
+            }
+        }
+
+        student.data = [{
+            id:1,
+            name:"haha",
+        },{
+            id:2,
+            name:"HUHU",
+        },{
+            id:3,
+            name:"Me",
+        }];
+
+        student.view();
+        student.haha = 10;
+        console.log(student);
+    </script>
+</body>
+</html>

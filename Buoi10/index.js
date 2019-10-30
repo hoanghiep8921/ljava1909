@@ -1,0 +1,1 @@
+alert("Lession 1 JS");
