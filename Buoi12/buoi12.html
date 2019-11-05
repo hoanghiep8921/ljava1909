@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        input{
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px;
+        }
+    .success{
+        border:1px solid green;
+    }
+    .error{
+        border:1px solid red;
+    }
+    </style>
+    
+</head>
+<body>
+    <span>Username</span><input id="username" type="text">
+    <br>
+    <span>Password</span><input id="password" type="password">
+    <br>
+    <!-- <input type="submit"> -->
+    <button onclick="checkLogin()" >Submit</button>
+
+    <hr>
+    
+    <span>Username</span><input id="us" type="text">
+    <br>
+    <span>Password</span><input id="pass" type="password">
+    <br>
+    <span>Repassword</span><input id="repass" onkeyup="checkEquals()" type="password">
+    <span id="message" style="display:none;"></span>
+    <br>
+
+    <button onclick="register()">Register</button>
+
+    <div id="createData">
+
+    </div>
+    <button>Create DATA</button>
+    <script>
+        var str = "test String";
+        console.log(str.length);
+        console.log(str.toUpperCase());
+        console.log(str.toLowerCase());
+        console.log(str);
+        var date = new Date();
+        console.log(date);
+
+        var a =5  ;
+        a = "123";
+        console.log(a);
+        function checkLogin(){
+            //var listInput = document.getElementsByTagName("input");
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            console.log(username,password);
+            if(username === 'admin' && password === 'admin'){
+                alert("Welcome Admin");
+            }else{
+                alert("Invalid username or password");
+            }
+        }
+
+        function register(){
+            var us = document.getElementById("us").value.length;   
+            var pw = document.getElementById("pass").value;  
+            var repw = document.getElementById("repass").value;
+            if(pw != repw || us < 6){
+                alert("Not OK");
+                return;
+            }else{
+                alert("REGISTER SUCCESSFULLY !");
+                return;
+            }
+        }
+
+        function checkEquals(){
+            var pw = document.getElementById("pass");
+            var repw = document.getElementById("repass");
+
+            var message = document.getElementById("message");
+            
+            if(pw.value != repw.value){
+                message.innerHTML = " Định lừa tao à";
+                message.style.display = "inline-block";
+                message.style.color = "red";
+                
+                pw.classList.add("error");
+
+                repw.classList.add("error");
+
+                pw.classList.remove("success");
+                repw.classList.remove("success");
+            }else{
+                message.innerHTML = " Đúng rồi đó";
+                message.style.display = "inline-block";
+                message.style.color = "green";
+
+                pw.classList.add("success");
+                repw.classList.add("success");
+
+                pw.classList.remove("error");
+                repw.classList.remove("error");
+            }
+        }
+
+        var h1 = document.createElement('h1');
+        h1.innerHTML = "Nội dung vừa được tạo = DOM NODE";
+        h1.style.color = "red";
+
+        var div = document.getElementById("createData");
+        div.appendChild(h1);
+
+        var data = ['java',"js","C#","PHP"];
+        
+    </script>
+</body>
+</html>

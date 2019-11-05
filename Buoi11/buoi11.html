@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    Số 1 <input type="text" id="number1">
+    Số 2 <input type='text' id="number2">
+    <button onclick="excute()">Submit</button>
+
+    <script>
+        function execute(){
+            document.getElementById("number1").value;
+            
+            console.log("tổng :");
+            console.log("hiệu :");
+            console.log("tích :");
+            console.log("thương :");
+        }
+
+
+        var tmp = function logwork(){
+            console.log("test javascript");
+        
+        }
+        tmp;
+        // console.log(tmp);
+        // console.log(typeof tmp);
+        //logwork(); 
+
+        var tong = 0;
+        for(var i = 0;i <= 100 ; i++){
+            if(i%2 == 0){
+              tong += i;  
+            }
+        }
+        console.log(tong);
+        
+        //tinh tong so nguyen to
+        var a =[1,5,7,9,10,22];
+        for(var i=0; i<a.length;i++){
+            // a[2];a[3]; a[i];
+            if(check(a[i])){
+                tong += a[i];
+            }
+        }
+        //check so nguyen tố
+        function check(number){
+            if(number < 2){
+                return true;
+            }
+            for(var i=2;i<number;i++){
+                if(number % i == 0){
+                    return false;
+                }
+            }
+            return true;
+        }
+        var arr = [1,2];
+        //arr[3] = 3;
+        arr.push(4);
+
+        var c = 'abcab';
+        //a - 2; b -2 ; c - 1
+        //c[1] = b
+        //c[0] = a
+        //c.length độ dài của chuỗi
+
+
+        //sắp xếp mảng
+        var sortArr = [6,3,5,10,2];
+        //Duyệt mảng
+        for(var i = 0; i < sortArr.length ; i++){
+            //console.log(sortArr[i]);
+
+            //Duyệt các phần tử còn lại 
+            for(var j = i+1; j < sortArr.length;j++){
+                //so sánh giá trị 
+                if(sortArr[i] > sortArr[j]){
+                    //đổi chỗ
+                    var tmp = sortArr[i];
+                    sortArr[i] = sortArr[j];
+                    sortArr[j] = tmp;
+                }
+            }
+        }
+
+        console.log(sortArr);
+    </script>
+</body>
+</html>
