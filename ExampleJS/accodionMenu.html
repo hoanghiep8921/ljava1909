@@ -49,7 +49,7 @@
                 </p>
             </div>
          
-            <button class="accordion">CSS</button>
+            <button class="accordion" >CSS</button>
             <div class="panel">
                 <p>
                     dịch từ tiếng Anh là Cascading Style Sheets (CSS) – được dùng để 
@@ -70,8 +70,11 @@
             </div>
         </div>
     </body>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    
     <script>
         //Lấy các button mô tả nội dung
+        //document.getElementsByClassName("accordion");
         var acc = document.getElementsByClassName("accordion");
         var i;
         console.log(acc);
@@ -91,5 +94,9 @@
                 }
             }
         }
+
+        $('.accordion').click(function(){
+            $('.accordion')
+        })
     </script>
 </html>

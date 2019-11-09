@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+<style>
+    .abc{
+        counter-reset: 123;
+    }
+    #text{
+        color:red;
+    }
+</style>
+    
+</head>
+<body>
+        <p id="text">123</p>
+        <input id="login" value="login">
+    <button onclick="reload()">Reload</button>
+    <button id='callAjax'>Get Data</button>
+    <input id="suggest">
+    <p id="result"></p>
+    <!-- <script src='jquery.js'></script> -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    <script>
+        $(document).ready(function(){
+
+            // document.getElementById("text")
+            $('#text').text("Update text");
+            console.log($('#login').val());
+            $('#login').click(function(){
+                console.log("on lick Login");
+            });
+
+            $("#callAjax").click(function(){
+                $.ajax({
+                    url: "https://jsonplaceholder.typicode.com/todos/1",
+                    success: function(result){
+                        $("#text").html(result);
+                    }});
+                });
+            });
+    </script>
+    <script>
+        console.log(window.innerHeight);
+        
+        console.log(window.innerWidth);
+
+       // window.open('https://www.facebook.com/groups/382416255989703/');
+
+        //window.location.href="https://google.com";
+
+        // console.log(window.location.hostname);
+        
+        // console.log(window.location.origin);
+        
+        // console.log(window.location.href);
+        
+        // console.log(window.location.origin);
+        
+        // console.log(window.location.pathname);
+        
+        // console.log(window.location.port);
+
+        // console.log(window.location.search);
+
+        // function reload(){
+        //     window.location.reload();
+        // }
+
+        // document.cookie = 'username=hiep';
+        var a;
+
+        function test(){
+            console.log("tesst");
+        }
+
+        test();
+        a = "tai sao lai the nhi";
+        console.log(a);
+        
+        function scope() {
+		  if (true) {
+		    let test = 1;
+		  }
+		  console.log(test);
+		}
+		scope();
+
+        var a = 123;
+        var b = 456;
+
+        var tmp;
+        tmp = a;
+        a = b;
+        b = tmp;
+
+
+        a = a+b;
+        b = a - b;
+        a = a -b;
+        console.log(a,b);
+        console.log(tmp);
+
+
+        var name = "Peter";
+
+        var Hocsinh = {
+            name: "John",
+            printName: function(){
+                console.log(this.name);
+            }
+        };
+
+        Hocsinh.printName();
+        //window
+        //this.name
+        //window.name
+        var printHocsinhName = Hocsinh.printName;
+        printHocsinhName();   
+
+        function printMessage(a,b,c){
+            console.log("nguy hieerm");
+        }
+        function alertMessage(callback){
+            callback();
+        }
+        //printMessage();
+        alertMessage(printMessage);
+
+        function showfuncion(data){
+            console.log(data);
+        }
+        function getData(showfuncion){
+             //getdata from server ( mất 1s)
+             showfuncion(data) ; 
+        }
+
+        function outside(x) {
+		  function inside(y) {
+		    return x + y;
+		  }
+		  return inside;
+		}
+
+        fn_inside = outside(3); 
+        console.log(fn_inside);
+        result = fn_inside(5); // #=> 8
+        console.log(result);
+        
+        result1 = outside(3)(5);
+    </script>
+
+    <script>
+        var data = ["java","c#","php","python"];
+        //h
+        //php,python
+        console.log(data[0].indexOf("ja"));
+        $('#suggest').keyup(function(){
+            var resultData =[];
+            var valueInput = $('#suggest').val();
+            for(let i = 0;i<data.length;i++){
+                if(data[i].indexOf(valueInput) == 0 ){
+                    resultData.push(data[i]);
+                }
+            }
+            console.log(resultData);
+        })
+
+    </script>
+</body>
+</html>

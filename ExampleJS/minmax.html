@@ -9,7 +9,7 @@
 <body>
     <script>
    var testArrayLength = 100000;
-    var testArray = Array.from({length: testArrayLength}, () => Math.floor(Math.random() * 2000000));
+   var testArray = Array.from({length: testArrayLength}, () => Math.floor(Math.random() * 2000000));
 
 // ES6 spread
 Math.min(...testArray);
@@ -44,6 +44,7 @@ for (let i = 1; i < testArrayLength; ++i) {
 
 
 //Second Max
+// 2 biến
 function FindByLoop(){
     let firstMax, secondMax;
     let a = [1,5,4,7,9,10];
