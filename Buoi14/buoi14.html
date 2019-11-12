@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                Open modal
+              </button>
+              
+              <!-- The Modal -->
+              <div class="modal" id="myModal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+              
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">Modal Heading</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+              
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <h2>Name product</h2>
+                      <input class="form-control" id="name">
+                      
+                      <h2>Description product</h2>
+                      <input class="form-control" id="description">
+                    </div>
+              
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                      <button onclick="addProduct()"> Thêm sản phẩm </button>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+   
+    <div class="container">
+        <div class="row" id="listProduct" >
+
+        </div>
+    </div>
+        
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+</body>
+<script>
+//     Swal.fire(
+//   'Good job!',
+//   'You clicked the button!',
+//   'success'
+// )
+    var listData = [{
+        name :"test 1",
+        description:"Description 1"
+    },{
+        name :"test 2",
+        description:"Description 2"
+    },{
+        name :"test 3",
+        description:"Description 3"
+    },{
+        name :"test 4",
+        description:"Description 4"
+    }]
+
+    for(let i =0 ;i< listData.length;i++){
+        const div = document.createElement('div');
+        div.className = 'col-md-3';
+        div.innerHTML = `<div class="card">
+                    <img class="card-img-top" src="https://image.shutterstock.com/image-photo/colorful-flower-on-dark-tropical-260nw-721703848.jpg" alt="Card image">
+                    <div class="card-body">
+                        <h4 class="card-title">${listData[i].name}</h4>
+                        <p class="card-text">${listData[i].description}</p>
+                        <a href="#" class="btn btn-primary">See Profile</a>
+                    </div>
+                </div>`;
+
+        var listProduct = document.getElementById("listProduct");
+        listProduct.append(div);
+    }
+
+    function addProduct(){
+        const div = document.createElement('div');
+        div.className = 'col-md-3';
+        div.innerHTML = `
+                <div class="card">
+                    <img class="card-img-top" src="https://image.shutterstock.com/image-photo/colorful-flower-on-dark-tropical-260nw-721703848.jpg" alt="Card image">
+                    <div class="card-body">
+                        <h4 class="card-title">John Doe</h4>
+                        <p class="card-text">Some example text.</p>
+                        <a href="#" class="btn btn-primary">See Profile</a>
+                    </div>
+                </div>`;
+        var button = document.getElementById("listProduct");
+        button.append(div);
+        console.log("DOne");
+
+    }
+</script>
+</html>

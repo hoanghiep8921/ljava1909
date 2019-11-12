@@ -1,8 +1,3 @@
-
-
-<!------ Include the above in your HEAD tag ---------->
-
-
 <!DOCTYPE html><html class=''>
 <head>
 <meta charset='UTF-8'><meta name="robots" content="noindex">
@@ -13,7 +8,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css'>
 <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
-<style class="cp-pen-styles">@import url("https://fonts.googleapis.com/css?family=Arimo:400,700");
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<style class="cp-pen-styles">
+@import url("https://fonts.googleapis.com/css?family=Arimo:400,700");
 body {
   height: 100%;
   width: 100%;
@@ -190,18 +187,35 @@ a:hover {
 </head>
 <body>
 
-<marquee direction="left"><h1>Welcome to CGV by JVever.Return</h1></marquee>
+<marquee direction="left">
+  <h1>Welcome to CGV by JVever.Return</h1>
+</marquee>
+
+<button class="btn btn-success" id="addFilm">Thêm phim</button>
+
 <div class="container" id="listFilm">
 
-	
-</div><!--container-->
-<marquee direction="right"><img src="https://i.giphy.com/media/11sBLVxNs7v6WA/100.webp"><img src="https://i.giphy.com/media/11sBLVxNs7v6WA/100.webp"><img src="https://i.giphy.com/media/11sBLVxNs7v6WA/100.webp"><img src="https://i.giphy.com/media/11sBLVxNs7v6WA/100.webp"><img src="https://i.giphy.com/media/11sBLVxNs7v6WA/100.webp"></marquee>
+</div>
+<!--container-->
+
+
+<marquee direction="right">
+  <img src="https://i.giphy.com/media/11sBLVxNs7v6WA/100.webp">
+  <img src="https://i.giphy.com/media/11sBLVxNs7v6WA/100.webp">
+  <img src="https://i.giphy.com/media/11sBLVxNs7v6WA/100.webp">
+  <img src="https://i.giphy.com/media/11sBLVxNs7v6WA/100.webp">
+  <img src="https://i.giphy.com/media/11sBLVxNs7v6WA/100.webp">
+</marquee>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 <script src='script.js'></script>
 <script src='index.js'></script>
 <script src='font.js'></script>
-<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script type="text/javascript">
+  // data response by server
 	var listMovie = [{
 		id:1,
 		name:"Man of Steel",
@@ -227,10 +241,62 @@ a:hover {
 		year:2019,
 		actor:"Will Smith"
 	}];
-	$(document).ready(function(){
-	  $.ajax({url: "https://jsonplaceholder.typicode.com/todos/1", success: function(result){
-      		console.log(result);
+
+
+  //listMovie.forEach( (item) => console.log("item of list film",item) );
+  
+  
+  $(document).ready(function(){
+
+    $('#addFilm').dblclick(function(){
+      toastr.success('Đã thêm thành công');
+      $('#listFilm').append(`<div class="movie-card">
+		<div class="movie-header"  style=" background: url(123);background-size: cover;">
+			<div class="header-icon-container">
+				<a href="#">
+					<i class="material-icons header-icon"></i>
+				</a>
+			</div>
+		</div><!--movie-header-->
+		<div class="movie-content">
+			<div class="movie-content-header">
+				<a href="#">
+					<h3 class="movie-title">Test Phim</h3>
+				</a>
+				<div class="imax-logo"></div>
+			</div>
+			<div class="movie-info">
+				<div class="info-section">
+					<label>Date & Time</label>
+					<span>14/8/2019 10:00:00</span>
+				</div><!--date,time-->
+				<div class="info-section">
+					<label>Actor</label>
+					<span>ABCD</span>
+				</div><!--screen-->
+				<div class="info-section">
+					<label>Row</label>
+					<span>D</span>
+				</div><!--row-->
+				<div class="info-section">
+					<label>Seat</label>
+					<span>05,06</span>
+				</div><!--seat-->
+			</div>
+		</div>
+  </div>`);
+  
+    });
+      
+
+    $.ajax({
+      url: "https://jsonplaceholder.typicode.com/todos/1",
+      success: function(result){
+          //console.log(result);
+          
       		listMovie.forEach((item) => {
+            // "<div>" + 123 + "</div>"  ``
+            //document.getElemnetById("listFilm") 
 			  $('#listFilm').append(`<div class="movie-card">
 		<div class="movie-header"  style=" background: url(${item.image});background-size: cover;">
 			<div class="header-icon-container">
@@ -271,4 +337,6 @@ a:hover {
     	}});
 	});
 </script>
+
+
 </body></html>
