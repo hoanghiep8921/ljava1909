@@ -1,6 +1,7 @@
 package football;
 
 import boxing.Boxer;
+import caculateArea.Triangle;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,8 +16,6 @@ public class Main {
 
         ro.kick(ball);
         mess.kick(ball);
-
-
 
     }
 }
