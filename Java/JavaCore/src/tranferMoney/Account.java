@@ -1,5 +1,7 @@
 package tranferMoney;
 
+import java.util.Objects;
+
 public class Account {
     private int id;
     private String name;
@@ -88,4 +90,25 @@ public class Account {
     public void test1(int i, int j){
         System.out.println("test two parameter");
     }
+
+    //@Override
+//    public boolean equals(Account account){
+//        if(account.getName() == this.getName())
+//            return true;
+//        else
+//            return false;
+//    }
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//
+//        if (o == null || getClass() != o.getClass()) return false;
+//
+//        Account account = (Account) o;
+//        return id == account.id &&
+//                Float.compare(account.balance, balance) == 0 &&
+//                Objects.equals(name, account.name);
+//    }
+
 }

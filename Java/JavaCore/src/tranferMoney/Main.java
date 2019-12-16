@@ -17,5 +17,27 @@ public class Main {
         System.out.println("________");
         Date now = new Date(55,100,-1999);
         System.out.println(now.toString());
+
+
+        System.out.println("________");
+        String str1 = "abc";
+        String str2 = "abc";
+        String str3 = new String("abc");
+
+        System.out.println( 1 == 1);
+        System.out.println(str1 == str2);
+        System.out.println(str1 == str3);
+
+        System.out.println(str1.equals(str2));
+        System.out.println(str1.equals(str3));
+
+        System.out.println(a.equals(b));
+
+        Account c = new Account(1,"Hiep",0.0f);
+
+        Account d = new Account(1,"Hiep",0.0f);
+
+        System.out.println("So sánh 2 account :" + d.equals(c));
+
     }
 }

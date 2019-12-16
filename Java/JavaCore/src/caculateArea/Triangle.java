@@ -18,4 +18,9 @@ public class Triangle extends Shape{
     void printData() {
 
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
