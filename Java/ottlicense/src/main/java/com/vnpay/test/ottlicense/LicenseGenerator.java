@@ -17,6 +17,8 @@ public class LicenseGenerator {
     public static void generateLicense() throws Exception{
         String keyLicense = "01fghbad5f795da6"; // use default key license from DB or generate license
         System.out.println("keyLicense: " + keyLicense);
+
+
         LicenseEntity entity = new LicenseEntity();
         entity.setBankCode("970436"); //id bang partner
         entity.setAesKey("B@nk@!#@!VCB&^%!"); //keys
