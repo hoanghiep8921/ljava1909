@@ -1,8 +1,9 @@
 package comple.t3h.learnspring;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-
+@Configuration
 public class CreateBeanOfGirl {
     @Bean
     public Accessories beanAccessories(){
