@@ -15,7 +15,7 @@ public class HomeController {
                        @PathVariable String name,
                        @PathVariable String family){
         model.addAttribute("name",name);
-        model.addAttribute("family",family);
+        model.addAttribute("family1",family);
         return "test";
     }
 

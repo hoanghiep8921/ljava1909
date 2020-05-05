@@ -15,7 +15,7 @@ public class LearnspringApplication implements CommandLineRunner {
 	@Autowired
 	private Accessories accessories;
 	@Autowired
-	@Qualifier("koreanStyle")
+	@Qualifier("japanStyle")
 	private HairStyle hairStyle;
 
 	public static void main(String[] args) {
