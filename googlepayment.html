@@ -1,0 +1,412 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<div id="container"></div>
+
+	<script>
+		/**
+		 * Define the version of the Google Pay API referenced when creating your
+		 * configuration
+		 *
+		 * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#PaymentDataRequest|apiVersion in PaymentDataRequest}
+		 */
+		const baseRequest = {
+		  apiVersion: 2,
+		  apiVersionMinor: 0
+		};
+
+		/**
+		 * Card networks supported by your site and your gateway
+		 *
+		 * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
+		 * @todo confirm card networks supported by your site and gateway
+		 */
+		const allowedCardNetworks = ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"];
+
+		/**
+		 * Card authentication methods supported by your site and your gateway
+		 *
+		 * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
+		 * @todo confirm your processor supports Android device tokens for your
+		 * supported card networks
+		 */
+		const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
+
+		/**
+		 * Identify your gateway and your site's gateway merchant identifier
+		 *
+		 * The Google Pay API response will return an encrypted payment method capable
+		 * of being charged by a supported gateway after payer authorization
+		 *
+		 * @todo check with your gateway on the parameters to pass
+		 * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#gateway|PaymentMethodTokenizationSpecification}
+		 */
+		const tokenizationSpecification = {
+		  type: 'PAYMENT_GATEWAY',
+		  parameters: {
+		    'gateway': 'example',
+		    'gatewayMerchantId': 'exampleGatewayMerchantId'
+		  }
+		};
+
+		/**
+		 * Describe your site's support for the CARD payment method and its required
+		 * fields
+		 *
+		 * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
+		 */
+		const baseCardPaymentMethod = {
+		  type: 'CARD',
+		  parameters: {
+		    allowedAuthMethods: allowedCardAuthMethods,
+		    allowedCardNetworks: allowedCardNetworks
+		  }
+		};
+
+		/**
+		 * Describe your site's support for the CARD payment method including optional
+		 * fields
+		 *
+		 * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
+		 */
+		const cardPaymentMethod = Object.assign(
+		  {},
+		  baseCardPaymentMethod,
+		  {
+		    tokenizationSpecification: tokenizationSpecification
+		  }
+		);
+
+		/**
+		 * An initialized google.payments.api.PaymentsClient object or null if not yet set
+		 *
+		 * @see {@link getGooglePaymentsClient}
+		 */
+		let paymentsClient = null;
+
+		 /**
+		 * Configure your site's support for payment methods supported by the Google Pay
+		 * API.
+		 *
+		 * Each member of allowedPaymentMethods should contain only the required fields,
+		 * allowing reuse of this base request when determining a viewer's ability
+		 * to pay and later requesting a supported payment method
+		 *
+		 * @returns {object} Google Pay API version, payment methods supported by the site
+		 */
+		function getGoogleIsReadyToPayRequest() {
+		  return Object.assign(
+		      {},
+		      baseRequest,
+		      {
+		        allowedPaymentMethods: [baseCardPaymentMethod]
+		      }
+		  );
+		}
+
+		/**
+		 * Configure support for the Google Pay API
+		 *
+		 * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#PaymentDataRequest|PaymentDataRequest}
+		 * @returns {object} PaymentDataRequest fields
+		 */
+		function getGooglePaymentDataRequest() {
+		  const paymentDataRequest = Object.assign({}, baseRequest);
+		  paymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
+		  paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
+		  paymentDataRequest.merchantInfo = {
+		    // @todo a merchant ID is available for a production environment after approval by Google
+		    // See {@link https://developers.google.com/pay/api/web/guides/test-and-deploy/integration-checklist|Integration checklist}
+		    // merchantId: '01234567890123456789',
+		    merchantName: 'Example Merchant'
+		  };
+		  return paymentDataRequest;
+		}
+
+		/**
+		 * Return an active PaymentsClient or initialize
+		 *
+		 * @see {@link https://developers.google.com/pay/api/web/reference/client#PaymentsClient|PaymentsClient constructor}
+		 * @returns {google.payments.api.PaymentsClient} Google Pay API client
+		 */
+		function getGooglePaymentsClient() {
+		  if ( paymentsClient === null ) {
+		    paymentsClient = new google.payments.api.PaymentsClient({environment: 'TEST'});
+		  }
+		  return paymentsClient;
+		}
+
+		/**
+		 * Initialize Google PaymentsClient after Google-hosted JavaScript has loaded
+		 *
+		 * Display a Google Pay payment button after confirmation of the viewer's
+		 * ability to pay.
+		 */
+		function onGooglePayLoaded() {
+		  const paymentsClient = getGooglePaymentsClient();
+		  paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
+		      .then(function(response) {
+		        if (response.result) {
+		          addGooglePayButton();
+		          // @todo prefetch payment data to improve performance after confirming site functionality
+		          // prefetchGooglePaymentData();
+		        }
+		      })
+		      .catch(function(err) {
+		        // show error in developer console for debugging
+		        console.error(err);
+		      });
+		}
+
+		/**
+		 * Add a Google Pay purchase button alongside an existing checkout button
+		 *
+		 * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#ButtonOptions|Button options}
+		 * @see {@link https://developers.google.com/pay/api/web/guides/brand-guidelines|Google Pay brand guidelines}
+		 */
+		function addGooglePayButton() {
+		  const paymentsClient = getGooglePaymentsClient();
+		  const button =
+		      paymentsClient.createButton({onClick: onGooglePaymentButtonClicked});
+		  document.getElementById('container').appendChild(button);
+		}
+
+		/**
+		 * Provide Google Pay API with a payment amount, currency, and amount status
+		 *
+		 * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#TransactionInfo|TransactionInfo}
+		 * @returns {object} transaction info, suitable for use as transactionInfo property of PaymentDataRequest
+		 */
+		function getGoogleTransactionInfo() {
+		  return {
+		    countryCode: 'US',
+		    currencyCode: 'USD',
+		    totalPriceStatus: 'FINAL',
+		    // set to cart total
+		    totalPrice: '1.00'
+		  };
+		}
+
+		/**
+		 * Prefetch payment data to improve performance
+		 *
+		 * @see {@link https://developers.google.com/pay/api/web/reference/client#prefetchPaymentData|prefetchPaymentData()}
+		 */
+		function prefetchGooglePaymentData() {
+		  const paymentDataRequest = getGooglePaymentDataRequest();
+		  // transactionInfo must be set but does not affect cache
+		  paymentDataRequest.transactionInfo = {
+		    totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
+		    currencyCode: 'USD'
+		  };
+		  const paymentsClient = getGooglePaymentsClient();
+		  paymentsClient.prefetchPaymentData(paymentDataRequest);
+		}
+
+		/**
+		 * Show Google Pay payment sheet when Google Pay payment button is clicked
+		 */
+		function onGooglePaymentButtonClicked() {
+		  const paymentDataRequest = getGooglePaymentDataRequest();
+		  paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
+
+		  const paymentsClient = getGooglePaymentsClient();
+		  paymentsClient.loadPaymentData(paymentDataRequest)
+		      .then(function(paymentData) {
+		        // handle the response
+		        processPayment(paymentData);
+		      })
+		      .catch(function(err) {
+		        // show error in developer console for debugging
+		        console.error(err);
+		      });
+		}
+		/**
+		 * Process payment data returned by the Google Pay API
+		 *
+		 * @param {object} paymentData response from Google Pay API after user approves payment
+		 * @see {@link https://developers.google.com/pay/api/web/reference/response-objects#PaymentData|PaymentData object reference}
+		 */
+		function processPayment(paymentData) {
+		  // show returned data in developer console for debugging
+		    console.log(paymentData);
+		  // @todo pass payment token to your gateway to process payment
+		  paymentToken = paymentData.paymentMethodData.tokenizationData.token;
+		}
+	</script>
+	<script async src="https://pay.google.com/gp/p/js/pay.js"
+	  onload="onGooglePayLoaded()">
+  	
+  	</script>
+
+</body>
+</html> --><!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Simple Transactional Email</title>
+    <style>
+    /* -------------------------------------
+        INLINED WITH htmlemail.io/inline
+    ------------------------------------- */
+    /* -------------------------------------
+        RESPONSIVE AND MOBILE FRIENDLY STYLES
+    ------------------------------------- */
+    @media only screen and (max-width: 620px) {
+      table[class=body] h1 {
+        font-size: 28px !important;
+        margin-bottom: 10px !important;
+      }
+      table[class=body] p,
+            table[class=body] ul,
+            table[class=body] ol,
+            table[class=body] td,
+            table[class=body] span,
+            table[class=body] a {
+        font-size: 16px !important;
+      }
+      table[class=body] .wrapper,
+            table[class=body] .article {
+        padding: 10px !important;
+      }
+      table[class=body] .content {
+        padding: 0 !important;
+      }
+      table[class=body] .container {
+        padding: 0 !important;
+        width: 100% !important;
+      }
+      table[class=body] .main {
+        border-left-width: 0 !important;
+        border-radius: 0 !important;
+        border-right-width: 0 !important;
+      }
+      table[class=body] .btn table {
+        width: 100% !important;
+      }
+      table[class=body] .btn a {
+        width: 100% !important;
+      }
+      table[class=body] .img-responsive {
+        height: auto !important;
+        max-width: 100% !important;
+        width: auto !important;
+      }
+    }
+
+    /* -------------------------------------
+        PRESERVE THESE STYLES IN THE HEAD
+    ------------------------------------- */
+    @media all {
+      .ExternalClass {
+        width: 100%;
+      }
+      .ExternalClass,
+            .ExternalClass p,
+            .ExternalClass span,
+            .ExternalClass font,
+            .ExternalClass td,
+            .ExternalClass div {
+        line-height: 100%;
+      }
+      .apple-link a {
+        color: inherit !important;
+        font-family: inherit !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+        text-decoration: none !important;
+      }
+      #MessageViewBody a {
+        color: inherit;
+        text-decoration: none;
+        font-size: inherit;
+        font-family: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+      }
+      .btn-primary table td:hover {
+        background-color: #34495e !important;
+      }
+      .btn-primary a:hover {
+        background-color: #34495e !important;
+        border-color: #34495e !important;
+      }
+    }
+    </style>
+  </head>
+  <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
+    <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;">
+      <tr>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td>
+        <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;">
+          <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;">
+
+            <!-- START CENTERED WHITE CONTAINER -->
+            <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">This is preheader text. Some clients will show this text as a preview.</span>
+            <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;">
+
+              <!-- START MAIN CONTENT AREA -->
+              <tr>
+                <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;">
+                  <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
+                    <tr>
+                      <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Hi there,</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sometimes you just want to send a simple HTML email with a simple design and clear call to action. This is it.</p>
+                        <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
+                          <tbody>
+                            <tr>
+                              <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;">
+                                <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
+                                  <tbody>
+                                    <tr>
+                                      <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="http://htmlemail.io" target="_blank" style="display: inline-block; color: #ffffff; background-color: #3498db; border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #3498db;">Call To Action</a> </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">This is a really simple email template. Its sole purpose is to get the recipient to click the button with no distractions.</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Good luck! Hope it works.</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+            <!-- END MAIN CONTENT AREA -->
+            </table>
+
+            <!-- START FOOTER -->
+            <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;">
+              <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
+                <tr>
+                  <td class="content-block" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;">
+                    <span class="apple-link" style="color: #999999; font-size: 12px; text-align: center;">Company Inc, 3 Abbey Road, San Francisco CA 94102</span>
+                    <br> Don't like these emails? <a href="http://i.imgur.com/CScmqnj.gif" style="text-decoration: underline; color: #999999; font-size: 12px; text-align: center;">Unsubscribe</a>.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;">
+                    Powered by <a href="http://htmlemail.io" style="color: #999999; font-size: 12px; text-align: center; text-decoration: none;">HTMLemail</a>.
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <!-- END FOOTER -->
+
+          <!-- END CENTERED WHITE CONTAINER -->
+          </div>
+        </td>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td>
+      </tr>
+    </table>
+  </body>
+</html>
