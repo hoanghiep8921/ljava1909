@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ABC</title>
+</head>
+<body>
+
+<script type="text/javascript">
+	function A() {
+		console.log("A");
+	}
+
+	function B(data){
+		console.log(data);
+		data();
+	}
+
+	B(A);
+
+	function count10(){
+		for(let i = 0;i<10;i++){
+			console.log(i);
+		}
+		count5();
+	}
+
+	function count5(){
+		for(let i = 10;i>5;i--){
+			console.log(i);
+		}	
+	}
+
+	count10();
+
+</script>
+</body>
+</html>

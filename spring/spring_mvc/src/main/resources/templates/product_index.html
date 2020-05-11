@@ -4,44 +4,64 @@
     <meta charset='UTF-8'><meta name="robots" content="noindex">
     <link rel="shortcut icon" type="image/x-icon" href="https://production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
 <!--    <link th:href="@{/css/bootstrap.min.css}" />-->
-    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <link rel="mask-icon" type="" href="https://production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
-    <link rel="canonical" href="https://codepen.io/ryanparag/pen/LLrVbo?depth=everything&order=popularity&page=10&q=movie&show_forks=false" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css'>
-    <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link th:href="@{/css/custom.css}" rel='stylesheet prefetch' />
 </head>
 <body>
 
-<!--<marquee direction="left">-->
-<!--    <h1>Welcome to CGV by JVever.Return</h1>-->
-<!--</marquee>-->
-<img th:src="@{/img/anh_dep.jpg}" width="200px" height="200px" />
-<button class="btn btn-success" id="addFilm">Thêm phim</button>
-
+<button class="btn btn-success" id="addFilm" data-toggle="modal" data-target="#exampleModal">Thêm phim</button>
+<p th:if="${error}" th:text="${error}" style="color:red"></p>
+<p th:if="${success}" th:text="${success}" style="color:green"></p>
 <div class="container" id="listFilm">
-
+    <div th:each="product : ${products}" class="card col-md-4">
+        <img th:src="${product.image}" alt="Denim Jeans" style="width:100%">
+        <h1 th:text="${product.name}"></h1>
+        <p th:text="${product.actor}" class="price"></p>
+        <p>Some text about the jeans. Super slim and comfy lorem ipsum lorem jeansum. Lorem jeamsun denim lorem jeansum.</p>
+        <p><button>Edit</button></p>
+        <p><button>Delete</button></p>
+    </div>
 </div>
 <!--container-->
 
-
-<marquee direction="right">
-    <img src="https://i.giphy.com/media/11sBLVxNs7v6WA/100.webp">
-    <img src="https://i.giphy.com/media/11sBLVxNs7v6WA/100.webp">
-    <img src="https://i.giphy.com/media/11sBLVxNs7v6WA/100.webp">
-    <img src="https://i.giphy.com/media/11sBLVxNs7v6WA/100.webp">
-    <img src="https://i.giphy.com/media/11sBLVxNs7v6WA/100.webp">
-</marquee>
-
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="#" th:action="@{/product/create}" method="post">
+                    <div class="form-group">
+                        <label >ID Film</label>
+                        <input type="text" th:name="id" class="form-control" placeholder="ID Film">
+                    </div>
+                    <div class="form-group">
+                        <label >Name Film</label>
+                        <input type="text" th:name="name" class="form-control"  aria-describedby="emailHelp" placeholder="Ten phim">
+                    </div>
+                    <div class="form-group">
+                        <label >Name Actor</label>
+                        <input type="text" th:name="actor" class="form-control"  placeholder="Ten dien vien">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<script th:src='@{/js/script.js}'></script>
-<script th:src='@{/js/index.js}'></script>
-<script th:src='@{/js/font.js}'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script th:src="@{/js/main.js}"></script>
-
+<!--<script th:src="@{/js/main.js}"></script>-->
+<script></script>
 </body></html>
