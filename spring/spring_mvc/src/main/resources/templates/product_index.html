@@ -10,17 +10,19 @@
 </head>
 <body>
 
-<button class="btn btn-success" id="addFilm" data-toggle="modal" data-target="#exampleModal">Thêm phim</button>
+<button class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Thêm </button>
+<button class="btn btn-success" data-toggle="modal" data-target="#exampleModalEdit">Sửa</button>
 <p th:if="${error}" th:text="${error}" style="color:red"></p>
 <p th:if="${success}" th:text="${success}" style="color:green"></p>
 <div class="container" id="listFilm">
-    <div th:each="product : ${products}" class="card col-md-4">
-        <img th:src="${product.image}" alt="Denim Jeans" style="width:100%">
+    <div th:if="${products}" th:each="product : ${products}" class="card col-md-4">
+        <img th:src="${product.image}" alt="Denim Jeans"
+             style="width:100%">
         <h1 th:text="${product.name}"></h1>
         <p th:text="${product.actor}" class="price"></p>
-        <p>Some text about the jeans. Super slim and comfy lorem ipsum lorem jeansum. Lorem jeamsun denim lorem jeansum.</p>
-        <p><button>Edit</button></p>
-        <p><button>Delete</button></p>
+        <p>Some text about the jeans.</p>
+        <p><button th:attr="onclick=|getIdEdit('${product.id}')|" >Edit</button></p>
+        <p><a th:href="@{'/product/delete/' + ${product.id}}">Delete</a></p>
     </div>
 </div>
 <!--container-->
@@ -36,7 +38,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="#" th:action="@{/product/create}" method="post">
+                <form action="#"
+                      th:action="@{/product/create}" method="post">
                     <div class="form-group">
                         <label >ID Film</label>
                         <input type="text" th:name="id" class="form-control" placeholder="ID Film">
@@ -50,6 +53,7 @@
                         <input type="text" th:name="actor" class="form-control"  placeholder="Ten dien vien">
                     </div>
                     <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="reset">Reset</button>
                 </form>
             </div>
             <div class="modal-footer">
@@ -59,9 +63,56 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabelEdit">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label >ID Film</label>
+                    <input type="text" id="id-product" th:name="id" class="form-control" placeholder="ID Film">
+                </div>
+                <div class="form-group">
+                    <label >Name Film</label>
+                    <input type="text" id="name-product" th:name="name" class="form-control"  aria-describedby="emailHelp" placeholder="Ten phim">
+                </div>
+                <div class="form-group">
+                    <label >Name Actor</label>
+                    <input type="text" id="actor-product" th:name="actor" class="form-control"  placeholder="Ten dien vien">
+                </div>
+                <button onclick="update()" class="btn btn-primary">Update</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <!--<script th:src="@{/js/main.js}"></script>-->
-<script></script>
+<script>
+    function getIdEdit(id){
+        $('#id-product').val(id);
+    }
+
+    function update(){
+        let id = $('#id-product').val();
+        let name = $('#name-product').val();
+        let actor = $('#actor-product').val();
+        window.location.href =
+        "http://localhost:8081/product/update/"+ id + "?name=" +
+            name + "&actor=" + actor;
+    }
+</script>
+
 </body></html>

@@ -28,8 +28,25 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/index",method = RequestMethod.GET)
-    public String index(Model model){
+    public String index(Model model,
+                        @RequestParam(value = "status"
+                                ,required = false) Integer status){
         model.addAttribute("products",lstProduct);
+        if(status != null){
+            if(status == 0){
+                model.addAttribute("success","Đã xóa thành công");
+            }
+            if(status == 99){
+                model.addAttribute("error","Xóa bị lỗi");
+            }
+            if(status == 98){
+                model.addAttribute("error","Sửa bị lỗi");
+            }
+            if(status == 1){
+                model.addAttribute("success","Sửa thành công");
+            }
+        }
+
         return "product_index";
     }
 
@@ -38,27 +55,44 @@ public class ProductController {
                          @RequestParam("actor") String actor,
                          @RequestParam("id") int id,
                          Model model){
+
+        model.addAttribute("products",lstProduct);
         if(name.length() > 50 || id < 0){
             model.addAttribute("error","Data invalid");
-            return "product_index";
+        }else{
+            Product newProduct = new Product(""+id,name,"",actor,2020);
+            lstProduct.add(newProduct);
+            model.addAttribute("success","Create new film success");
         }
-        Product newProduct = new Product(""+id,name,"",actor,2020);
-        lstProduct.add(newProduct);
-        model.addAttribute("products",lstProduct);
-        model.addAttribute("success","Create new film success");
         return "product_index";
     }
 
-    @RequestMapping(value = "/delete/{id}",method = RequestMethod.POST)
-    public String create(@PathVariable("id") int id){
+    @RequestMapping(value = "/delete/{id}",
+            method = RequestMethod.GET)
+    public String delete(@PathVariable("id") int id,
+                         Model model){
         //Duyệt danh sách product
         //tìm vị trí sản phẩm
         //THực hiện xóa
         //trả về trạng thái thành công hay thất bại cho view
-        return "product_index";
+        int index = -1;
+        Product product = null;
+        for(Product p : lstProduct){
+            if(Integer.parseInt(p.getId()) == id){
+                index = lstProduct.indexOf(p);
+                //product = p;
+                break;
+            }
+        }
+        if(index != -1){
+            lstProduct.remove(index);
+        }
+        //lstProduct.remove(product);
+        return "redirect:/product/index?status=0";
     }
 
-    @RequestMapping(value = "/update/{id}",method = RequestMethod.POST)
+    @RequestMapping(value = "/update/{id}",
+            method = RequestMethod.GET)
     public String update(@PathVariable("id") int id,
                          @RequestParam("name")String name,
                          @RequestParam("actor") String actor){
@@ -67,14 +101,38 @@ public class ProductController {
         //Thực hiện update lại các trường name, actor
         //Lưu lại vào list product
         //trả về trạng thái thành công hay thất bại cho view
-        return "product_index";
+        int status = 0;
+        if(name.length() > 50 || id < 0 ){
+            status = 98;
+        }else{
+            Product exitsProduct = null;
+            int index = -1;
+            for(Product p : lstProduct){
+                if(Integer.parseInt(p.getId()) == id){
+                    exitsProduct = p;
+                    index = lstProduct.indexOf(exitsProduct);
+                    break;
+                }
+            }
+            if(exitsProduct != null){
+                exitsProduct.setName(name);
+                exitsProduct.setActor(actor);
+                lstProduct.set(index,exitsProduct);
+                status = 1;
+            }else{
+                status = 97;
+            }
+        }
+        return "redirect:/product/index?status=" + status;
     }
 
     @RequestMapping(value = "/product/{id}",method = RequestMethod.POST)
-    public String getDetail(){
+    public String getDetail(Model model){
         //Duyệt danh sách product
         //tìm vị trí sản phẩm
         //
-        return "product_index";
+        Product exitsProduct = lstProduct.get(0);
+        model.addAttribute("productDetail",exitsProduct);
+        return "product_detail";
     }
 }
