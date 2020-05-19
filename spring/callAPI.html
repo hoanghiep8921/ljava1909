@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-new-actor">
+    Create new product
+</button>
+
+<div class="container">
+    <div id="list-product" class="row">
+    	<!-- empty -->
+    </div>
+</div>
+<!-- Modal create new product -->
+<div class="modal fade" id="create-new-product" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create new Actor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="actorName">Name</label>
+                    <input type="text" class="form-control" id="name">
+                </div>
+                <div class="form-group">
+                    <label for="actorAge">Price</label>
+                    <input type="text" class="form-control" id="price">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button onclick="edit()" type="button" class="btn btn-primary">Create </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+<script>
+	var listProduct = [];
+	var currentProduct = '';
+	// var ob ={
+	// 	id:1,
+	// 	name:3,
+	// 	number : function abd(){
+	// 	},
+	// }
+	// var c = renderData;
+	renderData();
+	function renderData(){
+		$.ajax({
+			url:"http://localhost:8083/product/list?page=0&pageSize=5",
+			type:"GET",
+			success: function(response){
+				console.log("response after request",response);
+				if(response.code === '00'){
+					lstProduct = response.data;
+					// for(var i=0;i<lstProduct.length;i++){
+
+					// }
+					$('#list-product').empty();
+					lstProduct.map(item => {
+						$('#list-product').append(`
+							<div class="card col-3" style="width: 18rem;" >
+					            <img src="https://cf.shopee.vn/file/110be78c00d495ae468f1d1bd9f51815" class="card-img-top" alt="...">
+					            <div class="card-body" >
+					                <h5 class="card-title">${item.name}</h5>
+					                <h5 class="card-title">${item.price}</h5>
+					                <p class="card-text">${item.createdAt}</p>
+					                <p class="card-text">${item.id}</p>
+					                <button class="btn btn-primary" onclick="showEditModal('${item.id}')">Edit</button>
+					                <button class="btn btn-primary" onclick="deleteItem('${item.id}')">Delete</button>
+					            </div>
+					        </div>`);
+					})
+				}
+			}
+		})
+	}
+	function edit(){
+		let productEdit = {
+			name: $('#name').val().trim(),
+			price: $('#price').val().trim()
+		}
+
+		$.ajax({
+			url: "http://localhost:8083/product/update/"+currentProduct,
+			type: "PUT",
+			data: JSON.stringify(productEdit),
+			contentType: "application/json",
+			success: function(response){
+				if(response.code == "00"){
+					alert("Ban da sua san pham thanh cong");
+					$('#create-new-product').modal('hide');
+					renderData();
+				}else{
+					alert(response.message);
+				}
+			},
+			error: function(error){
+				console.log("Detail errror : ",errror);
+			}
+		})
+	}
+	function showEditModal(id){
+		currentProduct = id;
+		$('#create-new-product').modal('show');
+	}
+
+	function deleteItem(id){
+		$.ajax({
+			url:"http://localhost:8083/product/delete/"+id,
+			type:"DELETE",
+			success: function(response){
+				if(response.code == "00"){
+					alert("Ban da xoa san pham thanh cong");
+					renderData();
+					//xoa san pham di
+					//lstProduct.remove()
+				}else{
+					alert(response.message);
+				}
+			},
+			error: function(error){
+				console.log("Detail errror : ",errror);
+			}
+		})
+	}
+
+
+</script>
+</body>
+</html>

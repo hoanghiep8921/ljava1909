@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/product")
 public class ProductAPIController {
 
@@ -76,11 +76,14 @@ public class ProductAPIController {
     }
 
     @RequestMapping(value = "/update/{id}",method = RequestMethod.PUT)
-    public BaseResponse update(@PathVariable("id") int id,
+    public BaseResponse update(@PathVariable("id") String id,
                                @RequestBody ProductEditModal product){
         BaseResponse response = new BaseResponse();
         Product exitsProduct = null;
         int index = 0;
+        if(id.contains("CODE")){
+            id = id.replace("CODE","");
+        }
         for(int i=0;i < lstProduct.size();i++){
             if(lstProduct.get(i).getId().equals("CODE"+id)){
                 exitsProduct = lstProduct.get(i);
@@ -93,6 +96,52 @@ public class ProductAPIController {
         response.setData(exitsProduct);
         response.setCode("00");
         response.setMessage("Sửa thành công");
+        return response;
+    }
+    
+    @DeleteMapping("/delete/{id}")
+    public BaseResponse deleteProduct(@PathVariable("id") String id){
+        BaseResponse response = new BaseResponse();
+        Product exits = null;
+        for(Product p : lstProduct ){
+            if(id.contains("CODE")){
+                id = id.replace("CODE","");
+            }
+            if(p.getId().equals("CODE"+id)){
+                exits = p;
+            }
+        }
+        if(exits == null){
+            response.setCode("99");
+            response.setData(null);
+            response.setMessage("Mã sản phẩm không tồn tại");
+        }else{
+            lstProduct.remove(exits);
+            response.setCode("00");
+            response.setData(null);
+            response.setMessage("Đã xóa thành công");
+        }
+        return response;
+    }
+
+    @GetMapping("/detail/{id}")
+    public BaseResponse getDetail(@PathVariable("id")String id){
+        BaseResponse response = new BaseResponse();
+        Product exits = null;
+        for(Product p : lstProduct){
+            if(p.getId().equals("CODE"+id)){
+                exits = p;
+            }
+        }
+        if(exits == null){
+            response.setCode("99");
+            response.setData(null);
+            response.setMessage("Mã sản phẩm không tồn tại");
+        }else{
+            response.setCode("00");
+            response.setData(exits);
+            response.setMessage("Thành công");
+        }
         return response;
     }
 }
