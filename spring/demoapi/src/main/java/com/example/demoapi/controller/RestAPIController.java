@@ -16,7 +16,7 @@ public class RestAPIController {
     @Autowired
     TokenAuthenticationService tokenAuthenticationService;
 
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
     public BaseResponse login(@RequestParam("username")String username,
                               @RequestParam("password")String password){
         BaseResponse response = new BaseResponse();
@@ -40,6 +40,35 @@ public class RestAPIController {
             response.setMessage(e.getMessage());
         }
         return response;
+    }
+
+    @RequestMapping("/getInfo")
+    public BaseResponse getInfoUser(@RequestHeader("Authen")String token){
+        BaseResponse response = new BaseResponse();
+        try{
+            if(!validToken(token)){
+                throw new Exception("Invalid token");
+            }
+            response.setCode("00");
+            response.setData("Đây là thông tin user");
+            response.setMessage("Lấy user info thành công");
+        }catch (Exception e){
+            response.setCode("99");
+            response.setMessage(e.getMessage());
+        }
+
+        return response;
+    }
+    public boolean validToken(String token){
+        String username = tokenAuthenticationService.readJWT(token);
+        if(username == null || username.isEmpty()){
+            return false;
+        }
+        Optional<User> optUser = userRepository.findByUsername(username);
+        if(optUser.isPresent()){
+            return true;
+        }
+        return false;
     }
 
     @RequestMapping(value = "/api/example",method = RequestMethod.GET)
