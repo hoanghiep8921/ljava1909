@@ -3,6 +3,8 @@ package com.example.demoapi.controller;
 import com.example.demoapi.model.BaseResponse;
 import com.example.demoapi.model.Product;
 import com.example.demoapi.model.ProductEditModal;
+import com.example.demoapi.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +18,8 @@ import java.util.List;
 public class ProductAPIController {
 
     private List<Product> lstProduct = new ArrayList<>();
+    @Autowired
+    ProductRepository productRepository;
 
     @PostConstruct
     public void initData(){
@@ -28,6 +32,15 @@ public class ProductAPIController {
 
             lstProduct.add(p);
         }
+    }
+
+    @RequestMapping(value = "/getAll",method = RequestMethod.GET)
+    public BaseResponse getAllProduct(){
+        BaseResponse response = new BaseResponse();
+        response.setData(productRepository.findAll());
+        response.setCode("00");
+        response.setMessage("Lấy danh sách sản phẩm");
+        return response;
     }
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)

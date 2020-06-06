@@ -158,30 +158,9 @@
                 </li>
             </ul>
 
-            <div class="row">
-                <div class="col-sm-6 col-md-4">
-                    <div class="shop__thumb">
-                        <a href="#">
-                            <div class="shop-thumb__img">
-                                <img src="https://via.placeholder.com/400x400/" class="img-responsive" alt="...">
-                            </div>
-                            <h5 class="shop-thumb__title">123213</h5>
-                            <div class="shop-thumb__price">
-                                <div>
-                                    <span class="shop-thumb-price_old">123123</span>
-                                    <span class="shop-thumb-price_new">123123</span>
+            <div class="row" id="list_product">
 
-                                </div>
-                                <button class="btn btn-success">
-                                    Add to cart <i class="fa fa-cart-arrow-down">
-                                </i>
-                                </button>
-
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div> <!-- / .row -->
+            </div>
 
             <!-- Pagination -->
 <!--            <div class="row">-->
@@ -260,5 +239,55 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+    var baseURl = "http://localhost:8083/";
+    function getData() {
+        $.ajax({
+            url:baseURl + "product/getAll",
+            success:function (response) {
+                if(response.code == '00' && response.data){
+                    renderListProduct(response.data);
+                }else{
+                    alert(response.message);
+                }
+            },
+            error:function (error) {
+                console.log(error);
+                alert(error);
+            }
+        })
+    }
+    function addToCart(productId) {
+
+    }
+    function renderListProduct(listProduct) {
+        $('#list_product').empty();
+        listProduct.map(item => {
+            $('#list_product').append(`
+                    <div class="col-sm-6 col-md-4">
+                    <div class="shop__thumb">
+                        <a href="#">
+                            <div class="shop-thumb__img">
+                                <img src="${item.image ?
+                item.image : 'https://via.placeholder.com/400x400/'}"
+                                class="img-responsive" alt="...">
+                            </div>
+                            <h5 class="shop-thumb__title">${item.name}</h5>
+                            <div class="shop-thumb__price">
+                                <div>
+                                    <span class="shop-thumb-price_old">${item.price}</span>
+                                    <span class="shop-thumb-price_new">${item.price}</span>
+                                </div>
+                                <button class="btn btn-success" onclick="addToCart('${item.id}')">
+                                    Add to cart <i class="fa fa-cart-arrow-down">
+                                </i>
+                                </button>
+                            </div>
+                        </a>
+                    </div>
+                </div>`);
+        })
+    }
+</script>
 </body>
 </html>
