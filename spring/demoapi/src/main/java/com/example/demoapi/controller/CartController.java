@@ -17,7 +17,7 @@ public class CartController {
 
     //lấy số lượng loại sản phẩm trong giỏ hàng
     //theo id người dùng (user)
-    @RequestMapping("/products/{id}")
+    @RequestMapping(value = "/products/{id}",method = RequestMethod.GET)
     public BaseResponse getProductsInCart(
             @PathVariable("id") String userId){
         BaseResponse response = new BaseResponse();
@@ -35,7 +35,8 @@ public class CartController {
     }
 
     //Thêm sản phẩm vào giỏ hàng theo user
-    @RequestMapping(value = "/add/{id}/{idProduct}",method = RequestMethod.POST)
+    @RequestMapping(value = "/add/{id}/{idProduct}",
+            method = RequestMethod.POST)
     public BaseResponse addToCart(@PathVariable("id")String userId,
                                   @PathVariable("idProduct")String idProduct){
         BaseResponse response = new BaseResponse();

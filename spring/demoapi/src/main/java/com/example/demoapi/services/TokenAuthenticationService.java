@@ -4,14 +4,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 @Service
 public class TokenAuthenticationService {
     static final long EXPIRATIONTIME = 864_000_000; // 10 days
     static final String SECRET = "hiepdh";
-    static final String TOKEN_PREFIX = "Bearer";
 
     public String generateJWT(String username) {
         String JWT = Jwts.builder()
