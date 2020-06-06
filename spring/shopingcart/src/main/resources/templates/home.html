@@ -241,6 +241,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
     var baseURl = "http://localhost:8083/";
+    var idUser = "5edb821ef2a3906bb9ea0ae3";
+    var listProductCart = [];
+    getData();
     function getData() {
         $.ajax({
             url:baseURl + "product/getAll",
@@ -255,10 +258,43 @@
                 console.log(error);
                 alert(error);
             }
-        })
+        });
+        countProductCart();
     }
     function addToCart(productId) {
+        $.ajax({
+            url: baseURl + "cart/add/"+ idUser +'/'+productId,
+            type:"POST",
+            success:function (response) {
+                if(response.code == '00'){
+                    listProductCart = response.data;
+                    countProductCart();
+                }else{
+                    alert(response.message);
+                }
 
+            },
+            error:function (error) {
+                console.log(error);
+            }
+        })
+    }
+    function removeToCart(productId) {
+        $.ajax({
+            url: baseURl + "cart/delete/"+ idUser +'/'+productId,
+            type:"DELETE",
+            success:function (response) {
+                if(response.code == '00'){
+                    listProductCart = response.data;
+                    countProductCart();
+                }else{
+                    alert(response.message);
+                }
+            },
+            error:function (error) {
+                console.log(error);
+            }
+        })
     }
     function renderListProduct(listProduct) {
         $('#list_product').empty();
@@ -287,6 +323,9 @@
                     </div>
                 </div>`);
         })
+    }
+    function countProductCart() {
+        $('#number-cart').text(listProductCart.length);
     }
 </script>
 </body>
