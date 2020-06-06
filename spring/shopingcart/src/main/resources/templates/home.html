@@ -204,16 +204,16 @@
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
-                                    <tr>
-                                        <th scope="col"> </th>
-                                        <th scope="col">Product</th>
-                                        <th scope="col">Unit Price</th>
-                                        <th scope="col" class="text-center">Quantity</th>
-                                        <th scope="col" class="text-right">Price</th>
-                                        <th> </th>
-                                    </tr>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Unit Price</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
                                     </thead>
                                     <tbody id="list-product-in-cart">
+
                                     </tbody>
                                 </table>
                             </div>
@@ -250,6 +250,24 @@
             success:function (response) {
                 if(response.code == '00' && response.data){
                     renderListProduct(response.data);
+                }else{
+                    alert(response.message);
+                }
+            },
+            error:function (error) {
+                console.log(error);
+                alert(error);
+            }
+        });
+        countProductCart();
+    }
+    function getDataInCart() {
+        $.ajax({
+            url:baseURl + ,
+            success:function (response) {
+                if(response.code == '00' && response.data){
+                    listProductCart = response.data;
+                    renderListProductInCart(listProductCart);
                 }else{
                     alert(response.message);
                 }
@@ -322,6 +340,22 @@
                         </a>
                     </div>
                 </div>`);
+        })
+    }
+    function renderListProductInCart(){
+        $('#list-product-in-cart').empty();
+        listProductCart.map(item => {
+            $('#list-product-in-cart').append(`<tr>
+                                            <th scope="col">${item.id}</th>
+                                            <th scope="col"><img src="${item.image}" /></th>
+                                            <th scope="col">${item.name}</th>
+                                            <th scope="col">${item.price}</th>
+                                            <th scope="col">
+                                                <button class="btn btn-danger" onclick="removeToCart('${item.id}')">-</button>
+                                                <span>${item.number}</span>
+                                                <button class="btn btn-success" onclick="addToCart('${item.id}')>+</button>
+                                            </th>
+                                        </tr>`)
         })
     }
     function countProductCart() {
