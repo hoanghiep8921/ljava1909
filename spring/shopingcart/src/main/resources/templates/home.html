@@ -185,7 +185,7 @@
 
 <!-- The Modal -->
 <div class="modal" id="myModal">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
             <!-- Modal Header -->
@@ -219,11 +219,8 @@
                             </div>
                         </div>
                         <div id="total-price"></div>
-
-
                         <button class="btn btn-lg btn-block btn-danger text-uppercase">Checkout</button>
                         <a style="margin-bottom: 50px;margin-top: 20px;" href="http://localhost:8083/index" class="btn btn-lg btn-block btn-primary text-uppercase">Continue shopping</a>
-
                     </div>
                 </div>
             </div>
@@ -244,10 +241,14 @@
     var idUser = "5edb821ef2a3906bb9ea0ae3";
     var listProductCart = [];
     getData();
+    getDataInCart();
+    //lấy danh sách sản phẩm trong DB
     function getData() {
+        console.log("Before get list Product DB");
         $.ajax({
             url:baseURl + "product/getAll",
             success:function (response) {
+                console.log("After get list Product DB");
                 if(response.code == '00' && response.data){
                     renderListProduct(response.data);
                 }else{
@@ -259,15 +260,17 @@
                 alert(error);
             }
         });
-        countProductCart();
     }
+    //lấy danh sách sản phẩm trong giỏ hàng hiện tại
     function getDataInCart() {
+        console.log("Before get product In Cart");
         $.ajax({
-            url:baseURl + ,
+            url:baseURl + "cart/products/" + idUser,
             success:function (response) {
+                console.log("After get product In Cart");
                 if(response.code == '00' && response.data){
                     listProductCart = response.data;
-                    renderListProductInCart(listProductCart);
+                    renderListProductInCart();
                 }else{
                     alert(response.message);
                 }
@@ -277,8 +280,8 @@
                 alert(error);
             }
         });
-        countProductCart();
     }
+    //thêm sản phẩm vào giỏ hàng
     function addToCart(productId) {
         $.ajax({
             url: baseURl + "cart/add/"+ idUser +'/'+productId,
@@ -286,7 +289,7 @@
             success:function (response) {
                 if(response.code == '00'){
                     listProductCart = response.data;
-                    countProductCart();
+                    renderListProductInCart();
                 }else{
                     alert(response.message);
                 }
@@ -297,6 +300,7 @@
             }
         })
     }
+    //Xóa sản phẩm khỏi giỏ hàng
     function removeToCart(productId) {
         $.ajax({
             url: baseURl + "cart/delete/"+ idUser +'/'+productId,
@@ -304,7 +308,7 @@
             success:function (response) {
                 if(response.code == '00'){
                     listProductCart = response.data;
-                    countProductCart();
+                    renderListProductInCart();
                 }else{
                     alert(response.message);
                 }
@@ -314,6 +318,7 @@
             }
         })
     }
+    //Render danh sách sản phẩm
     function renderListProduct(listProduct) {
         $('#list_product').empty();
         listProduct.map(item => {
@@ -342,24 +347,39 @@
                 </div>`);
         })
     }
+    //Render danh sách sản phẩm trong giỏ hàng
     function renderListProductInCart(){
         $('#list-product-in-cart').empty();
+        countProductCart();
+        totalMoney();
         listProductCart.map(item => {
             $('#list-product-in-cart').append(`<tr>
-                                            <th scope="col">${item.id}</th>
-                                            <th scope="col"><img src="${item.image}" /></th>
-                                            <th scope="col">${item.name}</th>
+                                            <th scope="col">${item.idProduct}</th>
+                                            <th scope="col"><img src="${item.imageProduct}" class="image-cart" /></th>
+                                            <th scope="col">${item.nameProduct}</th>
                                             <th scope="col">${item.price}</th>
                                             <th scope="col">
-                                                <button class="btn btn-danger" onclick="removeToCart('${item.id}')">-</button>
-                                                <span>${item.number}</span>
-                                                <button class="btn btn-success" onclick="addToCart('${item.id}')>+</button>
+                                                <button class="btn btn-danger" onclick="removeToCart('${item.idProduct}')">-</button>
+                                                <span>${item.numbers}</span>
+                                                <button class="btn btn-success" onclick="addToCart('${item.idProduct}')">+</button>
+
                                             </th>
                                         </tr>`)
         })
     }
+    //Đếm số loại sản phẩm trong giỏ hàng
     function countProductCart() {
+        console.log("before count");
         $('#number-cart').text(listProductCart.length);
+        console.log("after count");
+    }
+    //Tính tổng tiền giỏ hàng
+    function totalMoney(){
+        let totalMoney = 0;
+        listProductCart.map(item => {
+            totalMoney += item.price * item.numbers;
+        })
+        $('#total-price').text(totalMoney + ' VND');
     }
 </script>
 </body>

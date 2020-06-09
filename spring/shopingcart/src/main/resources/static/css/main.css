@@ -1,4 +1,8 @@
 body{margin-top:20px;}
+.image-cart{
+    width: 100px !important;
+    height: 100px !important;
+}
 .img-responsive{
     width: 100% !important;
 }
