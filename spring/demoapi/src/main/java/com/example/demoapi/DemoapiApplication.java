@@ -4,16 +4,19 @@ import com.example.demoapi.model.ProductModal;
 import com.example.demoapi.model.User;
 import com.example.demoapi.repository.ProductRepository;
 import com.example.demoapi.repository.UserRepository;
+import com.example.demoapi.services.JobService;
 import com.example.demoapi.services.TokenAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 @SpringBootApplication
+@EnableScheduling
 public class DemoapiApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
@@ -26,8 +29,12 @@ public class DemoapiApplication implements CommandLineRunner {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    JobService jobService;
+
     @Override
     public void run(String... args) throws Exception {
+        jobService.sendEmail();
         //tạo user
 //        User user = new User();
 //        user.setId("");
