@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login page</title>
+</head>
+<body>
+<form th:action="@{/login}" method="post"
+      autocomplete="off" id="login_form">
+    <div>
+        <label th:if="${param.error != null}">
+            Thông tin đăng nhập không hợp lệ.
+            Vui lòng kiểm tra lại!
+        </label>
+        <label th:if="${param.lock != null}">
+            Tên đăng nhập đã bị khóa do sai mật khẩu
+            liên tiếp 5 lần
+        </label>
+    <div>
+        <input type="text" name="username" placeholder="Tên đăng nhập"/>
+    </div>
+        <input type="password" name="password" placeholder="Mật khẩu"/>
+    </div>
+    <div>
+        <button type="submit">Đăng nhập</button>
+    </div>
+</form>
+</body>
+</html>
